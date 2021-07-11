@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.rawgit.com/shorten/js/master/dist/0.2.2/shorten.js"></script>
 
     <link rel="stylesheet" href="css/style.css">
 	
@@ -127,25 +128,15 @@
 		   document.body.removeChild(el);
 		   
 		   
-		   
-		   
-		   var data = {
-			"domain":"https://wlirareddit.github.io/bb-formations/",
-			"originalURL": "https://wlirareddit.github.io/bb-formations/?grid-state=1-9.0-10.2-13.0-23.0-32.0-40.&red-hex-name=Cleaver+BF&red-hex-perks=hwIAEAKW&red-hex-gear=ETAFCFDREMAADIDHDFDJ&blue-hex-name=Cleaver+BF&blue-hex-perks=hwIAEAKW&blue-hex-gear=ETAFCFDREMAADIDHDFDJ&yellow-hex-name=Cleaver+BF&yellow-hex-perks=hwIAEAKW&yellow-hex-gear=ETAFCFDREMAADIDHDFDJ&orange-hex-name=Cleaver+BF&orange-hex-perks=hwIAEAKW&orange-hex-gear=ETAFCFDREMAADIDHDFDJ"
-			}; 
-		 fetch('https://api.short.io/links/public', {
-			method: 'post',
-			headers: {
-			  'accept': 'application/json',
-			  'Content-Type': 'application/json',
-			  'authorization': 'a02nFxt10dlq1FKFHiIdVrdLrzv4UzOj'
-			},
-			body: JSON.stringify(data)
-		  }).then(function(response){ 
-			 return response.json();
-			}).then(function(data){
-			alert(data.shortURL)
-			})
+		   var longUrl = 'https://wlirareddit.github.io/bb-formations/?grid-state=1-9.0-10.2-13.0-23.0-32.0-40.&red-hex-name=Cleaver+BF&red-hex-perks=hwIAEAKW&red-hex-gear=ETAFCFDREMAADIDHDFDJ&blue-hex-name=Cleaver+BF&blue-hex-perks=hwIAEAKW&blue-hex-gear=ETAFCFDREMAADIDHDFDJ&yellow-hex-name=Cleaver+BF&yellow-hex-perks=hwIAEAKW&yellow-hex-gear=ETAFCFDREMAADIDHDFDJ&orange-hex-name=Cleaver+BF&orange-hex-perks=hwIAEAKW&orange-hex-gear=ETAFCFDREMAADIDHDFDJ';
+
+			shorten.url(longUrl, function(err, shortenUrl){
+			  if(err){
+				console.log(err);
+			  }
+
+			  console.log(shortenUrl);
+			});
 
 		   
 		   
