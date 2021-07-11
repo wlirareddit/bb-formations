@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BB Formation Share Tool</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+	
+	
+	<link rel="icon" type="image/png" href="./favicon.png">
+	<script src="./bundle.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./src/bb_formation_tool.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+	var appglobal;
+		window.onload = function () {
+			// Create a random grid with this configuration.
+			var minHeight = 3,
+				minWidth = 3,
+				maxWidth = 10;
+				maxHeight = 15;
+
+			var newRandomGrid = function () {
+				var width = Math.floor(Math.random() * (maxWidth - minWidth)) + minHeight;
+				var height = Math.floor(Math.random() * (maxHeight - minHeight)) + minWidth;
+
+				var grid = document.getElementById('grid');
+				// Delete everything inside the grid element.
+				while (grid.firstChild) {
+					grid.removeChild(grid.firstChild);
+				}
+				// Create a new grid.
+				var App = require('/src/App.js');
+				var app = new App({
+					container: grid,
+					tileSize: 24,
+					width: 6,
+					height: 9,
+					onAnimationComplete: arguments.callee
+				});
+				return app;
+			}
+
+			appglobal = newRandomGrid();
+			
+			// Construct URLSearchParams object instance from current URL querystring.
+			var queryParams = new URLSearchParams(window.location.search);
+			
+			var gridstate = queryParams.get("grid-state");
+			
+			//parse
+			gridstate_split = gridstate.split('.');
+			
+			var tilestates ={};
+			
+			for (var i = 0; i < gridstate_split.length; i++) {
+				tilestate = gridstate_split[i].split('-');
+				if (tilestate.length == 2)
+					tilestates[tilestate[1]] = tilestate[0];
+			}
+			//console.log(tilestates);
+			
+			
+			var iter = appglobal.hexGrid.getTileIterator();
+			var tile = iter.next();
+			var state = "";
+			while (tile !== null) {
+				
+				//do stuff
+				if (tilestates[tile.id]!=null){
+					tile.state = tilestates[tile.id];
+					tile.selected = true;
+				}
+				
+				if (tile.state != null){
+					updateHexBackground(tile, tile.state);
+				}
+				
+				tile = iter.next();
+				
+				
+			}
+		};
+		
+		
+		function updateHexBackground(tile,state){
+			var list = ['./img/red-hex.png', './img/blue-hex.png', './img/yellow-hex.png', './img/orange-hex.png', './img/pink-hex.png', './img/green-hex.png', './img/purple-hex.png', './img/light-hex.png'];
+			
+			//tile.element.style.cssText.replace("./img/light-hex.png",list[state]);
+			//tile.element.style.backgroundImage.replace("./img/light-hex.png",list[state]);
+			appglobal.dtd.setTileImage(tile.element, list[state])
+			
+			//setComputedStyle(tile.element)["background-image"] = list[state];
+		}
+	</script>
+	<meta charset="utf-8" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row vertical-align">
+            <div class="col-12">
+                <div class="">
+                    <div class="form">
+                        <h1>Battle Brothers Formation Sharing Tool</h1>
+						
+						<br>
+                        <div class="row vertical-align">							
+							
+                        </div>
+						
+						<div class="col-12" align="center">
+								<div id="grid"></div>
+								<div class="row vertical-align">
+									<div class="col-5" align="right">
+									</div>
+									<div class="col-7" align="left">
+										<input type="text" id="company-name" placeholder="Company Name..." size="19" onchange="changeCompanyName()" style="font-size: 25px; font-family: 'Arial', sans-serif; font-weight: bold;">
+										<img src="./img/trash.png" width="35" height="35" onclick="eraseCompany()">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-5" align="right">
+									</div>
+									<div class="col-7" align="center">
+										<legend align="left"><b>Input your <a href="https://www.bbplanner.xyz/" target="_blank">BBplanner</a> build links below:</b></legend>
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/red-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="red-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="red-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="red-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="red-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="red-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="left">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/blue-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="blue-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="blue-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="blue-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="blue-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="blue-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="right">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/yellow-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="yellow-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="yellow-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="yellow-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="yellow-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="yellow-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="right">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/orange-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="orange-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="orange-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="orange-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="orange-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="orange-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="right">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/pink-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="pink-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="pink-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="pink-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="pink-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="pink-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="right">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/green-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="green-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="green-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="green-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="green-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="green-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="right">
+									</div>
+								</div>
+								<div class="row vertical-align">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="right">
+										<img src="./img/purple-hex.png" width="40" height="40">
+									</div>
+									<div class="col-6" align="left">
+										<input type="text" id="purple-hex-name" placeholder="Build Name" size="15" readonly>
+										<input type="text" id="purple-hex" placeholder="Build link..." size="10" onchange="changeBuildName(this.id)">
+										<a id="purple-hex-link" href="#" target="_blank" style="pointer-events: none"><img id="purple-hex-goto" src="./img/goto-gray.png" width="30" height="30"></a><img id="purple-hex-trash" src="./img/trash-gray.png" width="30" height="30" onclick='eraseLink(this.id)' style="pointer-events: none">
+									</div>
+									<div class="col-1" align="right">
+									</div>
+								</div>
+                        </div>
+							
+							
+                        </div>
+						
+						
+						
+						
+                        </div>
+					</div>
+                </div>
+            </div>
+</div>
+</body>
+
+<script>
+on_load_builds();
+load_company_name();
+</script>
+
+</html>
