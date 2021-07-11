@@ -6,6 +6,7 @@
     <title>BB Formation Share Tool</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="css/style.css">
 	
@@ -49,7 +50,7 @@
 			var queryParams = new URLSearchParams(window.location.search);
 			
 			var gridstate = queryParams.get("grid-state");
-			
+			try{
 			//parse
 			gridstate_split = gridstate.split('.');
 			
@@ -82,6 +83,10 @@
 				
 				
 			}
+			}
+			catch(err){
+				console.log(err);
+			}
 		};
 		
 		
@@ -94,6 +99,35 @@
 			
 			//setComputedStyle(tile.element)["background-image"] = list[state];
 		}
+		
+		
+		function getLink() {
+		  var copyText = window.location.href;
+		  $( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+		  
+		  
+		  copyStringToClipboard(copyText);
+		  
+		}
+		
+		function copyStringToClipboard (str) {
+		   // Create new element
+		   var el = document.createElement('textarea');
+		   // Set value (string to be copied)
+		   el.value = str;
+		   // Set non-editable to avoid focus and move outside of view
+		   el.setAttribute('readonly', '');
+		   el.style = {position: 'absolute', left: '-9999px'};
+		   document.body.appendChild(el);
+		   // Select text inside element
+		   el.select();
+		   // Copy text to clipboard
+		   document.execCommand('copy');
+		   // Remove temporary element
+		   document.body.removeChild(el);
+		}
+		
+		
 	</script>
 	<meta charset="utf-8" />
 </head>
@@ -113,14 +147,26 @@
 						
 						<div class="col-12" align="center">
 								<div id="grid"></div>
+								
+								
 								<div class="row vertical-align">
 									<div class="col-5" align="right">
 									</div>
 									<div class="col-7" align="left">
 										<input type="text" id="company-name" placeholder="Company Name..." size="19" onchange="changeCompanyName()" style="font-size: 25px; font-family: 'Arial', sans-serif; font-weight: bold;">
 										<img src="./img/trash.png" width="35" height="35" onclick="eraseCompany()">
+										<img src="./img/share.png" width="35" height="35" onclick="getLink()">
 									</div>
 								</div>
+								
+								<div class="row vertical-align" style="height: 30px">
+								<div class="col-5" align="right">
+								</div>
+								<div class="col-7" align="center">
+									<div class="alert-box success">Link copied to clipboard</div>
+								</div>
+								</div>
+								
 								<div class="row vertical-align">
 									<div class="col-5" align="right">
 									</div>
@@ -227,6 +273,7 @@
 									</div>
 								</div>
                         </div>
+
 							
 							
                         </div>
