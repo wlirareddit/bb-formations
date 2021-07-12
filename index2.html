@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/shorten/js/master/dist/0.2.2/shorten.js"></script>
 
     <link rel="stylesheet" href="css/style.css">
 	
@@ -107,40 +106,50 @@
 		  $( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
 		  
 		  
-		  copyStringToClipboard(copyText);
+		  get_short_url(copyText);
 		  
 		}
 		
-		function copyStringToClipboard (str) {
-		   // Create new element
-		   var el = document.createElement('textarea');
-		   // Set value (string to be copied)
-		   el.value = str;
-		   // Set non-editable to avoid focus and move outside of view
-		   el.setAttribute('readonly', '');
-		   el.style = {position: 'absolute', left: '-9999px'};
-		   document.body.appendChild(el);
-		   // Select text inside element
-		   el.select();
-		   // Copy text to clipboard
-		   document.execCommand('copy');
-		   // Remove temporary element
-		   document.body.removeChild(el);
-		   
-		   
-		   var longUrl = 'https://wlirareddit.github.io/bb-formations/?grid-state=1-9.0-10.2-13.0-23.0-32.0-40.&red-hex-name=Cleaver+BF&red-hex-perks=hwIAEAKW&red-hex-gear=ETAFCFDREMAADIDHDFDJ&blue-hex-name=Cleaver+BF&blue-hex-perks=hwIAEAKW&blue-hex-gear=ETAFCFDREMAADIDHDFDJ&yellow-hex-name=Cleaver+BF&yellow-hex-perks=hwIAEAKW&yellow-hex-gear=ETAFCFDREMAADIDHDFDJ&orange-hex-name=Cleaver+BF&orange-hex-perks=hwIAEAKW&orange-hex-gear=ETAFCFDREMAADIDHDFDJ';
+		
+		function get_short_url(long_url)
+		{
+			var accessToken = "cda14f31c712e68bb2dfdcec7ae0df838ab43295";
 
-			shorten.url(longUrl, function(err, shortenUrl){
-			  if(err){
-				console.log(err);
-			  }
+				var params = {
+					"long_url" : long_url           
+				};
 
-			  console.log(shortenUrl);
-			});
+				$.ajax({
+					url: "https://api-ssl.bitly.com/v4/shorten",
+					cache: false,
+					dataType: "json",
+					method: "POST",
+					contentType: "application/json",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
+					},
+					data: JSON.stringify(params)
+				}).done(function(data) {
+					console.log(data);
+					
+					// Create new element
+				   var el = document.createElement('textarea');
+				   // Set value (string to be copied)
+				   el.value = data.id;
+				   // Set non-editable to avoid focus and move outside of view
+				   el.setAttribute('readonly', '');
+				   el.style = {position: 'absolute', left: '-9999px'};
+				   document.body.appendChild(el);
+				   // Select text inside element
+				   el.select();
+				   // Copy text to clipboard
+				   document.execCommand('copy');
+				   // Remove temporary element
+				   document.body.removeChild(el);
 
-		   
-		   
-		   
+				}).fail(function(data) {
+					console.log(data);
+				});
 		}
 		
 		
