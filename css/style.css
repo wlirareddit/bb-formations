@@ -416,3 +416,17 @@ input:-webkit-autofill {
     border-color: #faebcc;
     display: none;
 }
+
+
+
+/* Centered text */
+.centered {
+  color: white;
+   text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+}

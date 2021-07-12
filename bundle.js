@@ -653,7 +653,10 @@ function updateHexgridState(){
 	}
 	console.log(state);
 	
-	try{		
+	try{
+		//count the number of hexes in each state
+		countHexgridState();
+		
 		// Construct URLSearchParams object instance from current URL querystring.
 		var queryParams = new URLSearchParams(window.location.search);
 		 
@@ -669,6 +672,36 @@ function updateHexgridState(){
 	
 }
 
+function countHexgridState(){
+	var iter = appglobal.hexGrid.getTileIterator();
+	var tile = iter.next();
+	var state = "";
+	
+	var tilestates = [0,0,0,0,0,0,0];
+	
+	while (tile !== null) {
+		
+		//do stuff
+		if (tile.selected){
+			tilestates[tile.state]++;
+		}
+		
+		tile = iter.next();
+	}
+	
+	document.getElementById("all-hex-count").innerHTML = tilestates.reduce((a, b) => a + b, 0);
+	document.getElementById("red-hex-count").innerHTML = tilestates[0];
+	document.getElementById("blue-hex-count").innerHTML = tilestates[1];
+	document.getElementById("yellow-hex-count").innerHTML = tilestates[2];
+	document.getElementById("orange-hex-count").innerHTML = tilestates[3];
+	document.getElementById("pink-hex-count").innerHTML = tilestates[4];
+	document.getElementById("green-hex-count").innerHTML = tilestates[5];
+	document.getElementById("purple-hex-count").innerHTML = tilestates[6];
+	
+	
+	return tilestates;
+	
+}
 
 
 /*

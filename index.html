@@ -87,6 +87,33 @@
 			catch(err){
 				console.log(err);
 			}
+			
+			
+			var iter = appglobal.hexGrid.getTileIterator();
+			var tile = iter.next();
+			var state = "";
+			
+			var tilestates = [0,0,0,0,0,0,0];
+			
+			while (tile !== null) {
+				
+				//do stuff
+				if (tile.selected){
+					tilestates[tile.state]++;
+				}
+				
+				tile = iter.next();
+			}
+			
+			document.getElementById("all-hex-count").innerHTML = tilestates.reduce((a, b) => a + b, 0);
+			document.getElementById("red-hex-count").innerHTML = tilestates[0];
+			document.getElementById("blue-hex-count").innerHTML = tilestates[1];
+			document.getElementById("yellow-hex-count").innerHTML = tilestates[2];
+			document.getElementById("orange-hex-count").innerHTML = tilestates[3];
+			document.getElementById("pink-hex-count").innerHTML = tilestates[4];
+			document.getElementById("green-hex-count").innerHTML = tilestates[5];
+			document.getElementById("purple-hex-count").innerHTML = tilestates[6];
+			
 		};
 		
 		
@@ -99,6 +126,8 @@
 			
 			//setComputedStyle(tile.element)["background-image"] = list[state];
 		}
+		
+		
 		
 		
 		function getLink() {
@@ -302,17 +331,26 @@
 								</div>
 								
 								<div class="row vertical-align">
-									<div class="col-5" align="right">
+									<div class="col-4" align="right">
+									</div>
+									<div class="col-1" align="center">
+										  <div id="all-hex-count" class="centered">0</div>
+										  <img src="./img/dark-hex.png" width="40" height="40">
 									</div>
 									<div class="col-7" align="center">
 										<legend align="left"><b>Input your <a href="https://www.bbplanner.xyz/" target="_blank">BBplanner</a> build links below:</b></legend>
 									</div>
+									<br>
+									<br>
+									<br>
+
 								</div>
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/red-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="red-hex-count" class="centered">0</div>
+										  <img src="./img/red-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="red-hex-name" placeholder="Build Name" size="15" readonly>
@@ -325,8 +363,9 @@
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/blue-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="blue-hex-count" class="centered">0</div>
+										  <img src="./img/blue-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="blue-hex-name" placeholder="Build Name" size="15" readonly>
@@ -339,8 +378,9 @@
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/yellow-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="yellow-hex-count" class="centered">0</div>
+										  <img src="./img/yellow-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="yellow-hex-name" placeholder="Build Name" size="15" readonly>
@@ -353,8 +393,9 @@
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/orange-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="orange-hex-count" class="centered">0</div>
+										  <img src="./img/orange-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="orange-hex-name" placeholder="Build Name" size="15" readonly>
@@ -367,8 +408,9 @@
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/pink-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="pink-hex-count" class="centered">0</div>
+										  <img src="./img/pink-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="pink-hex-name" placeholder="Build Name" size="15" readonly>
@@ -381,8 +423,9 @@
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/green-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="green-hex-count" class="centered">0</div>
+										  <img src="./img/green-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="green-hex-name" placeholder="Build Name" size="15" readonly>
@@ -395,8 +438,9 @@
 								<div class="row vertical-align">
 									<div class="col-4" align="right">
 									</div>
-									<div class="col-1" align="right">
-										<img src="./img/purple-hex.png" width="40" height="40">
+									<div class="col-1" align="center">
+										  <div id="purple-hex-count" class="centered">0</div>
+										  <img src="./img/purple-hex.png" width="40" height="40">
 									</div>
 									<div class="col-6" align="left">
 										<input type="text" id="purple-hex-name" placeholder="Build Name" size="15" readonly>
