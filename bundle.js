@@ -666,11 +666,23 @@ function updateHexgridState(){
 		// Replace current querystring with the new one.
 		history.replaceState(null, null, "?"+queryParams.toString());
 		
+		//save the company if there are changes in the hex grid and the company was saved beforehand
+		var name = document.getElementById("company-name").value;
+		if (localStorage[name]!=undefined){
+			
+			var company = window.location.search;
+			
+			//save on the storage
+			window.localStorage.setItem(name, company);
+		}
+		
 	} catch (err) {
 		build_name.value =  "";
 	}
 	
 }
+
+
 
 function countHexgridState(){
 	var iter = appglobal.hexGrid.getTileIterator();

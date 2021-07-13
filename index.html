@@ -316,9 +316,16 @@
 									<div class="col-3" align="right">
 									</div>
 									<div class="col-9" align="left">
-										<input type="text" id="company-name" placeholder="Company Name..." size="27" onchange="changeCompanyName()" style="font-size: 25px; font-family: 'Arial', sans-serif; font-weight: bold;">
-										<img src="./img/trash.png" width="35" height="35" onclick="eraseCompany()">
-										<img src="./img/share.png" width="35" height="35" onclick="getLink()">
+										<img id="new-icon" src="./img/new-formation.png" width="35" height="35" onclick="newCompany()"  style="cursor: pointer">
+										<img id="trash-icon" src="./img/trash-gray.png" width="35" height="35" onclick="eraseCompany()" style="pointer-events: none; cursor: pointer">
+										<input type="text" id="company-name" placeholder="Company Name..." size="27" onkeyup="changeCompanyName()" style="font-size: 25px; font-family: 'Arial', sans-serif; font-weight: bold;">
+										<img id="heart-icon" src="./img/heart-gray.png" width="35" height="35" onclick="saveCompany()"  style="pointer-events: none; cursor: pointer">
+										<img id="share-icon" src="./img/share-gray.png" width="35" height="35" onclick="getLink()"  style="pointer-events: none; cursor: pointer">
+										<div class="dropdown">
+										  <button class="dropbtn">Vault&#9660;</button>
+										  <div id="vault-companies" class="dropdown-content">
+										  </div>
+										</div>
 									</div>
 								</div>
 								
@@ -469,6 +476,9 @@
 <script>
 on_load_builds();
 load_company_name();
+loadMenu();
+
+checkIfCompanySaved(document.getElementById("company-name").value);
 </script>
 
 </html>

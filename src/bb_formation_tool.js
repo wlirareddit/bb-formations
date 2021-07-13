@@ -26,6 +26,16 @@ function changeBuildName(clicked_id){
 		document.getElementById(clicked_id+"-trash").src = "./img/trash.png";
 		document.getElementById(clicked_id+"-trash").style = "cursor: pointer";
 		
+		//save the company if there are changes in the hex grid and the company was saved beforehand
+		var name = document.getElementById("company-name").value;
+		if (localStorage[name]!=undefined){
+			
+			var company = window.location.search;
+			
+			//save on the storage
+			window.localStorage.setItem(name, company);
+		}
+		
 	} catch (err) {
 		console.log(err);
 		build_name.value =  "";
@@ -61,6 +71,7 @@ function changeBuildName(clicked_id){
 }
 
 function changeCompanyName(){
+	checkIfCompanySaved(document.getElementById("company-name").value);
 	
 	try{		
 		// Construct URLSearchParams object instance from current URL querystring.
@@ -150,8 +161,57 @@ function load_build(loaded_id){
 }
 
 function eraseCompany(){
+	window.localStorage.removeItem(document.getElementById("company-name").value);
 	window.history.replaceState(null, null, window.location.pathname);
 	location.reload();
+}
+
+function newCompany(){
+	window.history.replaceState(null, null, window.location.pathname);
+	location.reload();
+}
+
+function saveCompany(){
+	
+	var name = document.getElementById("company-name").value;
+	var company = window.location.search;
+	
+	//save on the storage
+	window.localStorage.setItem(name, company);
+	
+	//add to the vault menu
+	loadMenu();
+	
+	//update menu
+	checkIfCompanySaved(name);
+}
+
+function loadMenu(){
+	var vault = document.getElementById("vault-companies");
+	vault.innerHTML = '';
+	
+	
+	var typeofKey = null;
+	
+	var keys = [];
+	for (var key in localStorage) {
+		typeofKey = (typeof localStorage[key]);
+		if (typeofKey=="string" && key!="bundle-urls"){
+			//console.log(key, typeofKey);
+			keys.push(key);
+		}
+	}
+	console.log(keys);
+	keys = keys.sort(function (a, b) {
+		return a.toLowerCase().localeCompare(b.toLowerCase());
+	});
+	console.log(keys);
+	for (var i in keys){
+		var node = document.createElement("a");
+		node.innerHTML = keys[i];
+		node.href = localStorage[keys[i]];
+		vault.appendChild(node);
+	}
 }
 
 function eraseLink(link_id){
@@ -163,4 +223,39 @@ function eraseLink(link_id){
 	var event = new Event('change');
 	element.dispatchEvent(event);
 	
+}
+
+function checkIfCompanySaved(company_name){
+	try{
+		 if (localStorage[company_name]!=undefined){
+			 //if saved, enable menu icons
+			document.getElementById("trash-icon").style = "pointer-events: auto; cursor: pointer";
+			document.getElementById("trash-icon").src = "./img/trash.png";
+			document.getElementById("heart-icon").style = "pointer-events: auto; cursor: pointer";
+			document.getElementById("heart-icon").src = "./img/heart-full.png";
+			document.getElementById("share-icon").style = "pointer-events: auto; cursor: pointer";
+			document.getElementById("share-icon").src = "./img/share.png";
+			return true;
+			
+			
+		 } else {
+			 document.getElementById("trash-icon").style = "pointer-events: none; cursor: pointer";
+			 document.getElementById("trash-icon").src = "./img/trash-gray.png";
+			 if (document.getElementById("company-name").value!=""){
+				document.getElementById("heart-icon").style = "pointer-events: auto; cursor: pointer";
+				document.getElementById("heart-icon").src = "./img/heart-empty.png";
+				document.getElementById("share-icon").style = "pointer-events: auto; cursor: pointer";
+				document.getElementById("share-icon").src = "./img/share.png";
+			} else {
+				document.getElementById("heart-icon").style = "pointer-events: none; cursor: pointer";
+				document.getElementById("heart-icon").src = "./img/heart-gray.png";
+				document.getElementById("share-icon").style = "pointer-events: none; cursor: pointer";
+				document.getElementById("share-icon").src = "./img/share-gray.png";
+			}
+			return false;
+		 }
+	}
+	catch (err) {
+		console.log(err);
+	}
 }
