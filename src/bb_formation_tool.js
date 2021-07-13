@@ -145,9 +145,8 @@ function load_build(loaded_id){
 			queryParams2.set("name", name);//name
 			if (perks!="null")
 				queryParams2.set("perks", perks);//perks
-			if (gear!="null"){
-				queryParams2.set("gear", gear);//gear
-			}
+			if (gear!="null")
+				queryParams2.set("gear", gear);//gear			}
 			document.getElementById(loaded_id).value = "https://www.bbplanner.xyz/?"+queryParams2.toString();
 			
 			var element = document.getElementById(loaded_id);
