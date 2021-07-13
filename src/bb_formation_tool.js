@@ -55,7 +55,7 @@ function changeBuildName(clicked_id){
 		queryParams.set(clicked_id+"-perks", "null");//perks
 		queryParams.set(clicked_id+"-gear", "null");//gear
 		
-		console.log(queryParams.toString());
+		//console.log(queryParams.toString());
 		var ret = queryParams.toString();
 		ret = ret.replace(clicked_id+"-name=null",'');
 		ret = ret.replace(clicked_id+"-perks=null",'');
@@ -201,11 +201,11 @@ function loadMenu(){
 			keys.push(key);
 		}
 	}
-	console.log(keys);
+	
 	keys = keys.sort(function (a, b) {
 		return a.toLowerCase().localeCompare(b.toLowerCase());
 	});
-	console.log(keys);
+	
 	for (var i in keys){
 		var node = document.createElement("a");
 		node.innerHTML = keys[i];
