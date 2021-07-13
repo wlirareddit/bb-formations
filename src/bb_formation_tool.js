@@ -151,7 +151,7 @@ function load_build(loaded_id){
 			document.getElementById(loaded_id).value = "https://www.bbplanner.xyz/?"+queryParams2.toString();
 			
 			var element = document.getElementById(loaded_id);
-			var event = new Event('change');
+			var event = new Event('keyup');
 			element.dispatchEvent(event);
 		}
 		
